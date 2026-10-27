@@ -120,10 +120,11 @@ app.post("/biodata", validateBody(biodataSchema), async (req, res) => {
 
 app.put("/biodata/:id",
     validateParams(idSchema), 
-    validateBody(biodataSchema
-    .fork(['nama', 'nim', 'kelas'], (field) => field.required()
-    .fork(['id'], (field) => field.forbidden()),
-),
+    validateBody(
+        biodataSchema
+            .fork(['nama', 'nim', 'kelas'], (field) => field.required())
+            .fork(['id'], (field) => field.forbidden())
+    ),
 async (req, res) => {
     const { id } = req.params;
     const { nama, nim, kelas } = req.body;
@@ -151,4 +152,9 @@ app.delete("/biodata/:id", validateParams(idSchema), async (req, res) => {
         return errorResponse(res, "Data tidak ditemukan", 404)
     }
     return successResponse(res, "Data berhasil dihapus", result.rows[0])
+})
+
+// if route not found
+app.use((req, res) => {
+    return errorResponse(res, "Endpoint tidak ditemukan", 404)
 })
