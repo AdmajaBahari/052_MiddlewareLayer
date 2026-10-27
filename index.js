@@ -79,3 +79,25 @@ function validateBody(schema) {
         }
         req.body = value;
         next();
+    }
+}
+// Middleware untuk validasi parameter ID
+function validateParams(schema) {
+    return (req, res, next) => {
+        const { error, value } = schema.validate(req.params);
+        if (error) {
+            return errorResponse(
+                res,
+                "Parameter Validation Failed",
+                400,
+                error.details.map(item => ({
+                    field: item.path.join('.'),
+                    message: item.message
+                }))
+            
+            )
+        }
+        req.params = value;
+        next();
+    }
+}
