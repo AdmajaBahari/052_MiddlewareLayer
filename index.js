@@ -35,15 +35,15 @@ app.use((req, res, next) => {
 })
 
 // Response Envelope
-function responseEnvelope(res, message, data, status = 200) {
+function successResponse(res, message, data, status = 200) {
     return res.status(status).json({
         success: true, message, data, error: null,
     })
 }
 
-function responseEnvelope(res, message, status, details = null) {
+function errorResponse(res, message, status, details = null) {
     return res.status(status).json({
-        success: false, message, data:null, error: details,
+        success: false, message, data: null, error: details,
     })
 }
 
